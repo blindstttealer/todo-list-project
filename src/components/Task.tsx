@@ -1,45 +1,58 @@
 import React from "react";
 import { Checkbox, IconButton } from "@mui/material";
 import {
-  changeStatus,
-  changeTodoTaskTitle,
-  removeTask,
+  removeTaskTC,
+  updateTaskStatusTC,
+  updateTaskTitleTC,
 } from "../state/todoTasks-reducer";
 import { Delete, EmojiEmotions, HeartBrokenRounded } from "@mui/icons-material";
 import { EditableSpan } from "./EditableSpan";
 import { useDispatch } from "react-redux";
+import { TaskStatuses, TaskType } from "../models/api-models";
+import { AppDispatch } from "../state/store";
 
 type TaskPropsType = {
-  id: string;
-  isDone: boolean;
-  title: string;
   todoId: string;
+  task: TaskType;
 };
 
-export const Task: React.FC<TaskPropsType> = ({
-  id,
-  isDone,
-  title,
-  todoId,
-}) => {
-  const dispatch = useDispatch();
+export const Task: React.FC<TaskPropsType> = ({ task, todoId }) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const status = event.currentTarget.checked;
+    dispatch(
+      updateTaskStatusTC(
+        todoId,
+        task.id,
+        status ? TaskStatuses.Completed : TaskStatuses.New,
+      ),
+    );
+  };
+
+  const removeTask = (todoId: string, taskId: string) => {
+    dispatch(removeTaskTC(todoId, task.id));
+  };
+
+  const changeTaskTitle = (title: string) => {
+    dispatch(updateTaskTitleTC(todoId, task.id, title, task));
+  };
+
   return (
-    <div key={id} className={isDone ? "is-done" : ""}>
+    <div
+      key={task.id}
+      className={task.status === TaskStatuses.Completed ? "is-done" : ""}
+    >
       <Checkbox
         color="secondary"
-        onChange={(e) =>
-          dispatch(changeStatus(id, todoId, e.currentTarget.checked))
-        }
-        checked={isDone}
+        onChange={onChangeHandler}
+        checked={task.status === TaskStatuses.Completed}
         icon={<EmojiEmotions />}
         checkedIcon={<HeartBrokenRounded />}
       />
-      <EditableSpan
-        title={title}
-        onChange={(title) => dispatch(changeTodoTaskTitle(title, todoId, id))}
-      />
+      <EditableSpan title={task.title} onChange={changeTaskTitle} />
       <IconButton
-        onClick={() => dispatch(removeTask(id, todoId))}
+        onClick={() => removeTask(todoId, task.id)}
         style={{ color: "gray" }}
       >
         <Delete />

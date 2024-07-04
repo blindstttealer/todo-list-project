@@ -1,78 +1,105 @@
-import {v1} from "uuid";
-import {TodoItemType} from "../App";
+import { v1 } from "uuid";
 import {
-    addNewTodoItem,
-    changeTodoItemFilter,
-    changeTodoItemTitle,
-    removeTodoList,
-    todoItemsReducer
+  addNewTodoItem,
+  changeTodoItemFilter,
+  changeTodoItemTitle,
+  removeTodoList,
+  setTodoListsAC,
+  todoItemsReducer,
 } from "./todoItems-reducer";
+import { TodoListEntityType, TodoListType } from "../models/api-models";
 
+const tasksId1 = v1();
+const tasksId2 = v1();
 
-test('correct todoItem should be removed', () => {
-    const tasksId1 = v1();
-    const tasksId2 = v1();
+let startState: TodoListEntityType[] = [];
 
-    const startState: Array<TodoItemType> = [
-        {id: tasksId1, title: "What to learn", filter: "all"},
-        {id: tasksId2, title: "What to play", filter: "completed"},
-    ]
+beforeEach(() => {
+  startState = [
+    {
+      id: tasksId1,
+      title: "What to learn",
+      filter: "all",
+      order: 0,
+      addedDate: "",
+    },
+    {
+      id: tasksId2,
+      title: "What to play",
+      filter: "completed",
+      order: 0,
+      addedDate: "",
+    },
+  ];
+});
 
-    const endState = todoItemsReducer(startState, removeTodoList(tasksId2))
-    expect(endState[0].title).toBe('What to learn');
-    expect(endState.length).toBe(1);
-})
+test("correct todoItem should be removed", () => {
+  const endState = todoItemsReducer(startState, removeTodoList(tasksId2));
+  expect(endState[0].title).toBe("What to learn");
+  expect(endState.length).toBe(1);
+});
 
-test('correct todoItem should be add new Item', () => {
-    const tasksId1 = v1();
-    const tasksId2 = v1();
+test("correct todoItem should be add new task", () => {
+  const newTitle = "SomeBody once told me";
 
-    const startState: Array<TodoItemType> = [
-        {id: tasksId1, title: "What to learn", filter: "all"},
-        {id: tasksId2, title: "What to play", filter: "completed"},
-    ]
+  const newTodoItem: TodoListEntityType = {
+    id: "2222",
+    order: 1,
+    filter: "all",
+    title: newTitle,
+    addedDate: "",
+  };
 
-    const newTitle = 'SomeBody once told me'
+  const endState = todoItemsReducer(startState, addNewTodoItem(newTodoItem));
 
-    const endState = todoItemsReducer(startState, addNewTodoItem(newTitle))
+  expect(endState[0].title).toBe(newTitle);
+  expect(endState.length).toBe(3);
+});
 
-    expect(endState[2].title).toBe(newTitle);
-    expect(endState.length).toBe(3);
+test("correct todoItem should be change his title", () => {
+  const newTitle = "SomeBody once told me";
 
-})
+  const endState = todoItemsReducer(
+    startState,
+    changeTodoItemTitle(newTitle, tasksId2),
+  );
 
+  expect(endState[0].title).toBe("What to learn");
+  expect(endState[1].title).toBe(newTitle);
+});
 
-test('correct todoItem should be change his title', () => {
-    const tasksId1 = v1();
-    const tasksId2 = v1();
+test("correct todoItem should be change his filter", () => {
+  const updateFilter = "active";
 
-    const startState: Array<TodoItemType> = [
-        {id: tasksId1, title: "What to learn", filter: "all"},
-        {id: tasksId2, title: "What to play", filter: "completed"},
-    ]
+  const endState = todoItemsReducer(
+    startState,
+    changeTodoItemFilter(tasksId2, updateFilter),
+  );
 
-    const newTitle = 'SomeBody once told me'
+  expect(endState[0].filter).toBe("all");
+  expect(endState[1].filter).toBe(updateFilter);
+});
 
-    const endState = todoItemsReducer(startState, changeTodoItemTitle(newTitle, tasksId2))
+test("corrent test should be added all todolists", () => {
+  const endState: TodoListType[] = todoItemsReducer(
+    [],
+    setTodoListsAC([
+      {
+        id: tasksId1,
+        title: "totototototototototototo",
+        order: 0,
+        addedDate: "",
+      },
+      {
+        id: tasksId2,
+        title: "gogogogogo",
+        order: 0,
+        addedDate: "",
+      },
+    ]),
+  );
 
-    expect(endState[0].title).toBe("What to learn")
-    expect(endState[1].title).toBe(newTitle)
-})
-
-test('correct todoItem should be change his filter', () => {
-    const tasksId1 = v1();
-    const tasksId2 = v1();
-
-    const startState: Array<TodoItemType> = [
-        {id: tasksId1, title: "What to learn", filter: "all"},
-        {id: tasksId2, title: "What to play", filter: "completed"},
-    ]
-
-    const updateFilter = 'active'
-
-    const endState = todoItemsReducer(startState, changeTodoItemFilter(tasksId2, updateFilter))
-
-    expect(endState[0].filter).toBe("all")
-    expect(endState[1].filter).toBe(updateFilter)
-
-})
+  expect(endState.length).toBe(2);
+  expect(endState[0].title).toBe("totototototototototototo");
+  expect(endState[1].title).toBe("gogogogogo");
+});

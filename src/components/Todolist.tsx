@@ -1,19 +1,14 @@
-import React from "react";
-import { FilterValuesType } from "../App";
+import React, { useEffect } from "react";
 import { AddItemForm } from "./AddItemForm";
 import { useDispatch } from "react-redux";
-import { addTask } from "../state/todoTasks-reducer";
+import { createTaskTC, getTasksTC } from "../state/todoTasks-reducer";
 import { FilterMenu } from "./FilterMenu";
 import { TasksInterface } from "./TasksInterface";
 import { TodoHeader } from "./TodoHeader";
 import { getFilteredTasks } from "../utils/getFilteredTasks";
 import { Grid, Paper } from "@mui/material";
-
-export type TaskType = {
-  id: string;
-  title: string;
-  isDone: boolean;
-};
+import { FilterValuesType, TaskType } from "../models/api-models";
+import { AppDispatch } from "../state/store";
 
 type PropsType = {
   id: string;
@@ -23,15 +18,19 @@ type PropsType = {
 };
 
 export const TodoList = (props: PropsType) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(getTasksTC(props.id));
+  }, []);
 
   const filteredTasksByFilterValue = React.useMemo(() => {
     return getFilteredTasks(props.tasks, props.filter);
   }, [props.filter, props.tasks]);
 
-  const addTaskHandler = React.useCallback(
+  const addTask = React.useCallback(
     (title: string) => {
-      dispatch(addTask(title, props.id));
+      dispatch(createTaskTC(props.id, title));
     },
     [dispatch, props.id],
   );
@@ -40,7 +39,7 @@ export const TodoList = (props: PropsType) => {
     <Grid>
       <Paper sx={{ padding: "5px 15px" }}>
         <TodoHeader title={props.title} todoId={props.id} />
-        <AddItemForm addItem={addTaskHandler} />
+        <AddItemForm addItem={addTask} />
         <TasksInterface tasks={filteredTasksByFilterValue} todoId={props.id} />
         <FilterMenu id={props.id} />
       </Paper>

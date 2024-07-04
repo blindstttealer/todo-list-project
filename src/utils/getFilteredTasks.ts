@@ -1,5 +1,4 @@
-import { TaskType } from "../components/Todolist";
-import { FilterValuesType } from "../App";
+import { FilterValuesType, TaskStatuses, TaskType } from "../models/api-models";
 
 enum FilterType {
   COMPLETED = "completed",
@@ -13,9 +12,9 @@ export const getFilteredTasks = (
   return tasks.filter((task) => {
     switch (filter) {
       case FilterType.COMPLETED:
-        return task.isDone;
+        return task.status === TaskStatuses.Completed;
       case FilterType.ACTIVE:
-        return !task.isDone;
+        return task.status === TaskStatuses.New;
       default:
         return task;
     }

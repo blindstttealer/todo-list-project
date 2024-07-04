@@ -1,35 +1,30 @@
 import "./App.css";
-import { TaskType, TodoList } from "./components/Todolist";
 import { AddItemForm } from "./components/AddItemForm";
-import { Container, Grid, Paper } from "@mui/material";
-
-import { useDispatch, useSelector } from "react-redux";
-import { AppRootState } from "./state/store";
-import { addNewTodoItem } from "./state/todoItems-reducer";
+import { Container, Grid } from "@mui/material";
+import { useDispatch } from "react-redux";
+import {
+  addNewTodoItem,
+  createTodoItem,
+  getTodoListsTC,
+} from "./state/todoItems-reducer";
 import { ButtonAppBar } from "./components/ButtonAppBar";
 import React, { useEffect, useState } from "react";
 import TodoItemsList from "./components/TodoItemsList";
-
-export type FilterValuesType = "all" | "active" | "completed";
-
-export type TodoItemType = {
-  id: string;
-  title: string;
-  filter: FilterValuesType;
-};
-
-export type TodoTasksType = {
-  [key: string]: TaskType[];
-};
+import { AppDispatch } from "./state/store";
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+
   const addNewTodoItemCallback = React.useCallback(
     (title: string) => {
-      dispatch(addNewTodoItem(title));
+      dispatch(createTodoItem(title));
     },
     [dispatch],
   );
+
+  useEffect(() => {
+    dispatch(getTodoListsTC());
+  }, []);
 
   return (
     <div className="App">

@@ -1,6 +1,7 @@
 import React from "react";
-import { TaskType } from "./Todolist";
+
 import { Task } from "./Task";
+import { TaskType } from "../models/api-models";
 
 type TasksInterfaceProps = {
   tasks: Array<TaskType>;
@@ -9,10 +10,11 @@ type TasksInterfaceProps = {
 
 export const TasksInterface: React.FC<TasksInterfaceProps> = React.memo(
   ({ todoId, tasks }) => {
+    console.log(tasks, "tasks");
     return (
       <div>
         {tasks.map((task) => {
-          return <Task {...task} todoId={todoId} key={task.id} />;
+          return <Task task={task} todoId={todoId} key={task.id} />;
         })}
       </div>
     );

@@ -3,15 +3,16 @@ import { Grid, Paper } from "@mui/material";
 import { TodoList } from "./Todolist";
 import { useSelector } from "react-redux";
 import { AppRootState } from "../state/store";
-import { TodoItemType, TodoTasksType } from "../App";
+import { TodoListEntityType, TodoTasksType } from "../models/api-models";
 
 const TodoItemsList = () => {
-  const todoItems = useSelector<AppRootState, Array<TodoItemType>>(
+  const todoItems = useSelector<AppRootState, Array<TodoListEntityType>>(
     (state) => state.items,
   );
   const todoTasks = useSelector<AppRootState, TodoTasksType>(
     (state) => state.tasks,
   );
+
   return (
     <Grid container columns={2} gap={2}>
       {todoItems.length !== 0 ? (
