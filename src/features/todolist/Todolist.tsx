@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
-import { AddItemForm } from "./AddItemForm";
+import { AddItemForm } from "../../components/add-item-form/AddItemForm";
 import { useDispatch } from "react-redux";
-import { createTaskTC, getTasksTC } from "../state/todoTasks-reducer";
+import { createTaskTC, getTasksTC } from "../../state/todoTasks-reducer";
 import { FilterMenu } from "./FilterMenu";
 import { TasksInterface } from "./TasksInterface";
 import { TodoHeader } from "./TodoHeader";
-import { getFilteredTasks } from "../utils/getFilteredTasks";
+import { getFilteredTasks } from "../../utils/getFilteredTasks";
 import { Grid, Paper } from "@mui/material";
-import { FilterValuesType, TaskType } from "../models/api-models";
-import { AppDispatch } from "../state/store";
+import { FilterValuesType, TaskType } from "../../models/api-models";
+import { AppDispatch } from "../../state/store";
 
 type PropsType = {
   id: string;
