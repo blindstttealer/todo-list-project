@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { changeTodoItemFilter } from "../state/todoItems-reducer";
+import { changeTodoItemFilter } from "../../state/todoItems-reducer";
 import { Button } from "@mui/material";
-import { FilterValuesType } from "../models/api-models";
+import { FilterValuesType } from "../../models/api-models";
 
 type FilterMenuPropsType = {
   id: string;

@@ -1,13 +1,13 @@
 import React from "react";
-import { EditableSpan } from "./EditableSpan";
+import { EditableSpan } from "../../components/editable-span/EditableSpan";
 import {
   removeTodoListTC,
   updateTodoListTitleTC,
-} from "../state/todoItems-reducer";
+} from "../../state/todoItems-reducer";
 import { IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../state/store";
+import { AppDispatch } from "../../state/store";
 
 type TodoHeaderProps = {
   title: string;

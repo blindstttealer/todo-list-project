@@ -4,12 +4,12 @@ import {
   removeTaskTC,
   updateTaskStatusTC,
   updateTaskTitleTC,
-} from "../state/todoTasks-reducer";
+} from "../../../state/todoTasks-reducer";
 import { Delete, EmojiEmotions, HeartBrokenRounded } from "@mui/icons-material";
-import { EditableSpan } from "./EditableSpan";
+import { EditableSpan } from "../../../components/editable-span/EditableSpan";
 import { useDispatch } from "react-redux";
-import { TaskStatuses, TaskType } from "../models/api-models";
-import { AppDispatch } from "../state/store";
+import { TaskStatuses, TaskType } from "../../../models/api-models";
+import { AppDispatch } from "../../../state/store";
 
 type TaskPropsType = {
   todoId: string;

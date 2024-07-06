@@ -1,7 +1,7 @@
 import React from "react";
 
-import { Task } from "./Task";
-import { TaskType } from "../models/api-models";
+import { Task } from "./task/Task";
+import { TaskType } from "../../models/api-models";
 
 type TasksInterfaceProps = {
   tasks: Array<TaskType>;
